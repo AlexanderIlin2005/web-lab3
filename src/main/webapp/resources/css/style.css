@@ -1,0 +1,221 @@
+body {
+    background-image: url("/lab3_web-1.0-SNAPSHOT/resources/img/r.png");
+    background-attachment: fixed;
+    background-color:#464646;
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+}
+
+/* animation_header */
+#header {
+    font-family:sans-serif;
+    color:#393949;
+    overflow:hidden
+}
+
+#header h2::after {
+    color: transparent;
+    transition-property:color;
+    transition-duration:.5s;
+}
+
+#header:hover h1, #header:hover h2 {
+    transform:translateX(50px);
+}
+
+#header h1 {
+    font-size:40px;
+    transition-property:transform;
+    transition-duration:.5s;
+}
+
+#header h2 {
+    font-size: 35px;
+    transition-duration:.3s;
+}
+/* end animation_header */
+
+.main .buttonStart {
+    width:120px;background:-moz-linear-gradient(#d0ecf4, #5bc9e1, #d0ecf4);
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#d0ecf4), to(#d0ecf4), color-stop(0.5, #5bc9e1));
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#00BBD6", endColorstr="#EBFFFF");
+    border-radius:5px;
+    padding:5px 12px;
+    height:50px;
+    position: relative;
+    left: 850px;
+    top: 350px;
+    border:2px solid;
+}
+
+/* cat_image */
+.cat {
+    position:fixed;
+    top:600px;
+    left: 1150px;
+    z-index:-1;
+}
+/* end cat_image */
+
+.form_block {
+    float: left;
+    width: 500px;
+    height: 400px;
+    text-align: center;
+    margin: 10px;
+
+    border-radius: 15px;
+    border-style: solid;
+    border-width: 3.5px;
+    border-color: #00899E;
+}
+
+#time_wrapper {
+    position: fixed;
+    float: none;
+    height: 180px;
+    left: 660px;
+    top: 330px;
+    margin: auto;
+}
+
+#text_block {
+    position: relative;
+    top: 27px;
+    font-size:20px;
+}
+
+.btnSubmit .classBtnSubmit {
+    width:200px;background:-moz-linear-gradient(#d0ecf4, #5bc9e1, #d0ecf4);
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#d0ecf4), to(#d0ecf4), color-stop(0.5, #5bc9e1));
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#00BBD6", endColorstr="#EBFFFF");
+    padding:5px 12px;
+    height:40px;
+    position: relative;
+    left: 150px;
+    top: 115px;
+    border-radius: 7px;
+    border:2px solid;
+}
+
+.bordered {
+    border:1px solid #555;
+    border-radius:8px;
+    box-shadow:0 10px 10px #0003;
+    height:470px;
+    width: 500px;
+}
+
+.x-coordinate {
+    position: relative;
+    left: 30px;
+}
+
+.y-coordinate {
+    position: relative;
+    left: 30px;
+    top: 19px;
+}
+
+.r-coordinate {
+    position: relative;
+    left: 30px;
+    top: 60px;
+}
+
+.y-coordinate .inputY {
+    position: relative;
+    border:2px solid;
+    border-radius:10px;
+    padding:10px;
+    width: 170px;
+    top: 10px;
+    background:#eee;
+}
+
+.canvas-container {
+    position: relative;
+    border:1px solid #555;
+    border-radius:8px;
+    box-shadow:0 10px 10px #0003;
+    height:470px;
+    width: 500px;
+    left: 508px;
+    bottom: 473px;
+
+}
+
+.chart-label{
+    position: absolute;
+    left: 50px;
+    top: 5px;
+}
+
+.table .table-container {
+    position: relative;
+    bottom: 943px;
+    left: 950px;
+    padding:1%;
+    margin-left:100px;
+    border-collapse:collapse;
+    background-color:#ffffffcc;
+    width: 820px;
+}
+
+.table .table-container th {
+    border:solid 1px #000;
+    width:40px;
+    height:50px;
+    text-align: center;
+}
+
+.table .table-container tr {
+    border:solid 1px #000;
+    width:40px;
+    height:50px;
+    text-align: center;
+}
+
+.table .table-container td {
+    border:solid 1px #000;
+    width:40px;
+    height:50px;
+    text-align: center;
+}
+
+.btnReturn {
+    width:150px;
+    background:-moz-linear-gradient(#d0ecf4, #5bc9e1, #d0ecf4);
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#d0ecf4), to(#d0ecf4), color-stop(0.5, #5bc9e1));
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#00BBD6", endColorstr="#EBFFFF");
+    padding:5px 12px;
+    height:30px;
+    position: fixed;
+    left: 2px;
+    top:5px;
+    border-radius: 30px;
+    border:2px solid;
+}
+
+#graph {
+    position: relative;
+    left: 45px;
+    top: 40px;
+}
+
+.inputR {
+    position: relative;
+    background:#eee;
+    border:2px solid;
+    border-radius:10px;
+    padding:10px;
+    width: 170px;
+    top: 10px;
+}
+
+#y_messageError, #r_messageError {
+    margin-top: 15px;
+    color: red;
+    position: absolute;
+}

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Лабораторная работа №3 по веб-программированию</title>
+    <h:outputStylesheet library="css" name="style.css" />
+    <h:outputScript library="js" name="grapher.js" target="body"/>
+    <h:outputScript library="js" name="validation.js" target="body"/>
+    <h:outputScript library="js" name="timeZone.js" target="body"/>
+    <h:outputScript library="js" name="jquery-3.6.3.min.js" target="head"/>
+</h:head>
+<h:body>
+    <div id="header">
+        <h1>
+            <span>Abulfatov</span>
+            Ruslan
+        </h1>
+        <h2>P32312, var: 66647</h2>
+    </div>
+    <h:form prependId="false">
+        <h:inputText id="bigTZ" style="visibility: hidden" value="#{model.timezoneOffset}">
+            <f:ajax listener="#{model.timezoneChangedListener}"/>
+        </h:inputText>
+    </h:form>
+    <div id="parameters" class="bordered">
+        <h:form id="formParameters" action="#{parameters.submit()}">
+            <div class="x-coordinate">
+                <br>
+                    <h:outputLabel value="X value:"/>
+                </br>
+                <h:selectOneRadio id="x" value="#{parameters.x}">
+                    <f:selectItem itemLabel="-2" itemValue="-2"/>
+                    <f:selectItem itemLabel="-1.5" itemValue="-1.5"/>
+                    <f:selectItem itemLabel="-1" itemValue="-1"/>
+                    <f:selectItem itemLabel="-0.5" itemValue="-0.5"/>
+                    <f:selectItem itemLabel="0" itemValue="0"/>
+                    <f:selectItem itemLabel="0.5" itemValue="0.5"/>
+                    <f:selectItem itemLabel="1" itemValue="1"/>
+                    <f:selectItem itemLabel="1.5" itemValue="1.5"/>
+                    <f:selectItem itemLabel="2" itemValue="2"/>
+                </h:selectOneRadio>
+                <h:inputHidden id="hiddenX" value="${parameters.hiddenX}"/>
+            </div>
+
+            <div class="y-coordinate">
+                <br>
+                    <h:outputLabel value="Y value:"/>
+                </br>
+                <h:inputText styleClass="inputY" value="#{parameters.y}" onkeyup="validateY()" id="y" maxlength="6" required="true" autocomplete="off">
+                    <f:passThroughAttribute name="placeholder" value="Значение от -5 до 5"/>
+                </h:inputText>
+                <div id="y_messageError"></div>
+            </div>
+
+            <div class="r-coordinate">
+                <br/>
+                    <h:outputLabel value="R values:"/>
+                <br/>
+                <h:selectManyCheckbox value="#{parameters.rs}" id="rs" onchange="validateR()">
+                    <f:selectItem itemValue="1" itemLabel="1"/>
+                    <f:selectItem itemValue="2" itemLabel="2"/>
+                    <f:selectItem itemValue="3" itemLabel="3"/>
+                    <f:selectItem itemValue="4" itemLabel="4"/>
+                    <f:selectItem itemValue="5" itemLabel="5"/>
+                </h:selectManyCheckbox>
+                <div id="r_messageError"></div>
+            </div>
+
+            <div class="btnSubmit">
+                <h:commandButton type="submit" styleClass="classBtnSubmit" id="submit" value="Submit">
+                    <f:ajax execute="@form" render="maintable" listener="#{parameters.submit()}"/>
+                </h:commandButton>
+            </div>
+
+    </h:form>
+    </div>
+            <div class="canvas-container">
+                <div class="chart-label">
+                    R = ?
+                </div>
+                <canvas width="400px" height="400px" id="graph">
+                    <span>
+                        <h:graphicImage src="img/graph.png" alt="Task grpah" width="400" height="400"/>
+                    </span>
+                </canvas>
+            </div>
+
+            <div class="table">
+                <h:dataTable id="maintable" value="#{model.getReversed()}" var="pointAttempt" styleClass="table-container">
+                    <h:column id="xColumn">
+                        <f:facet name="header">X</f:facet>
+                        <h:outputText value="#{pointAttempt.point.x}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Y</f:facet>
+                        <h:outputText value="#{pointAttempt.point.y}"/>
+                    </h:column>
+                    <h:column id="rColumn">
+                        <f:facet name="header">R</f:facet>
+                        <h:outputText value="#{pointAttempt.point.r}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Current time</f:facet>
+                        <h:outputText value="#{pointAttempt.getTimeStampFormatted()}"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Execution time</f:facet>
+                        <h:outputText value="#{pointAttempt.processTime} ms"/>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Was hit?</f:facet>
+                        <h:outputText id="hit" value="#{pointAttempt.success}"/>
+                    </h:column>
+                </h:dataTable>
+            </div>
+
+        <h:form id="formBtnReturn">
+            <h:commandButton styleClass="btnReturn" action="#{pageNavigation.goToIndex()}" value="Return to back"/>
+        </h:form>
+
+    <img class="cat" src="/lab3_web-1.0-SNAPSHOT/resources/img/cat.gif" alt="pussy"/>
+</h:body>
+</html>
