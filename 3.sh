@@ -1,0 +1,1 @@
+ssh -p 2222 s381032@se.ifmo.ru -Y -L24080:helios:24080
