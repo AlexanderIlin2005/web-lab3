@@ -5,9 +5,9 @@ import area_zone.RectangleArea;
 import area_zone.SectorArea;
 import area_zone.TriangleArea;
 
-import jakarta.ejb.Singleton;
+import javax.ejb.Singleton;
 
-import jakarta.inject.Named;
+import javax.inject.Named;
 
 import java.io.Serializable;
 

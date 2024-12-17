@@ -16,7 +16,7 @@ public class Connector {
 
     private static final String DB_URL = "jdbc:postgresql://pg:5432/studs";
     private static final String USER = "s381032";
-    private static final String PASS = "UVos.8847";
+    private static final String PASS = "aIERPRFWna2YH9th";
     private static final Connector INSTANCE = new Connector();
 
     Connection connection;

@@ -77,16 +77,26 @@
 
     </h:form>
     </div>
-            <div class="canvas-container">
-                <div class="chart-label">
-                    R = ?
-                </div>
-                <canvas width="400px" height="400px" id="graph">
-                    <span>
-                        <h:graphicImage src="img/graph.png" alt="Task grpah" width="400" height="400"/>
-                    </span>
-                </canvas>
-            </div>
+    <div class="canvas-container">
+        <div class="chart-label">R = ?</div>
+        <canvas id="graph" width="400" height="400"></canvas>
+        <h:graphicImage library="default" name="img/graph.png" alt="Task graph" width="400" height="400" style="display:none;" id="staticGraph" />
+    </div>
+
+    <script src="resources/js/grapher.js"></script>
+    <script>
+        window.onload = function() {
+            const canvas = document.getElementById("graph");
+            const staticImage = document.getElementById("staticGraph");
+
+            if (canvas.getContext) {
+                runGrapher().drawGraph(); // Отрисовка графика
+                staticImage.style.display = "none"; // Скрыть статическое изображение
+            } else {
+                staticImage.style.display = "block"; // Показать статическое изображение
+            }
+        };
+    </script>
 
             <div class="table">
                 <h:dataTable id="maintable" value="#{model.getReversed()}" var="pointAttempt" styleClass="table-container">

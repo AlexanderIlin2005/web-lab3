@@ -1,6 +1,6 @@
 package beans;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

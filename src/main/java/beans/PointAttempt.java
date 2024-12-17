@@ -2,9 +2,9 @@ package beans;
 
 import util.CustomFormatter;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 
-import jakarta.inject.Named;
+import javax.inject.Named;
 
 import java.time.Instant;
 import java.time.ZoneId;
