@@ -59,6 +59,14 @@
             <artifactId>postgresql</artifactId>
             <version>42.5.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.cdimascio</groupId>
+            <artifactId>java-dotenv</artifactId>
+            <version>5.2.2</version>
+        </dependency>
+
+
     </dependencies>
 
 
@@ -69,6 +77,37 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.2</version>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>process-resources</phase> <!-- Выполняется на стадии process-resources -->
+                        <configuration>
+                            <executable>cp</executable> <!-- Команда копирования для UNIX/Linux -->
+                            <arguments>
+                                <argument>${project.basedir}/src/main/resources/.env</argument> <!-- Путь к исходному файлу .env -->
+                                <argument>${project.build.directory}/classes/.env</argument> <!-- Путь к файлу в target/classes -->
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+
+        <resources>
+        <!-- Настройка для копирования .env файла -->
+        <resource>
+            <directory>src/main/java</directory> <!-- Указываем исходную папку для .env -->
+            <includes>
+                <include>util/.env</include> <!-- Включаем файл .env для копирования -->
+            </includes>
+            <targetPath>target/classes/util</targetPath> <!-- Копируем в target/classes/util -->
+        </resource>
+    </resources>
     </build>
 </project>
