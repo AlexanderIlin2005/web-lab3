@@ -2,8 +2,8 @@ package beans;
 
 import util.Connector;
 
-import javax.enterprise.context.ApplicationScoped;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 import java.time.ZoneId;
@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Named
-@ApplicationScoped
+@SessionScoped
 @NoArgsConstructor
 public class Model implements Serializable {
 

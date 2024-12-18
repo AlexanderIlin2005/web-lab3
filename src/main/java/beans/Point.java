@@ -1,6 +1,6 @@
 package beans;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
-@ApplicationScoped
+@SessionScoped
 @NoArgsConstructor
 @AllArgsConstructor
 public class Point implements Serializable {

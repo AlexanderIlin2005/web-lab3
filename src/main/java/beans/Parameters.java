@@ -1,6 +1,6 @@
 package beans;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Named("parameters")
-@ApplicationScoped
+@SessionScoped
 @AllArgsConstructor
 @NoArgsConstructor
 public class Parameters implements Serializable {

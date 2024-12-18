@@ -2,7 +2,7 @@ package beans;
 
 import util.CustomFormatter;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.SessionScoped;
 
 import javax.inject.Named;
 
@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Named("attempt")
-@ApplicationScoped
+@SessionScoped
 @NoArgsConstructor
 @AllArgsConstructor
 public class PointAttempt implements Serializable {
