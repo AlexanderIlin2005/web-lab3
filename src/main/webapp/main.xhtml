@@ -83,22 +83,171 @@
         <h:graphicImage library="default" name="img/graph.png" alt="Task graph" width="400" height="400" style="display:none;" id="staticGraph" />
     </div>
 
-    <script src="resources/js/grapher.js"></script>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             const canvas = document.getElementById("graph");
             const staticImage = document.getElementById("staticGraph");
 
             if (canvas.getContext) {
-                runGrapher().drawGraph(); // Отрисовка графика
-                staticImage.style.display = "none"; // Скрыть статическое изображение
+                const width = canvas.width;
+                const height = canvas.height;
+                const ctx = canvas.getContext("2d");
+                const hiddenInputX = document.querySelector('#formParameters\\:hiddenX');
+
+                function getAttempts() {
+                    const attempts = [];
+                    const rows = document.querySelectorAll('#maintable tbody tr');
+                    rows.forEach((row) => {
+                        const cells = row.cells;
+                        if (cells.length >= 6 &amp;&amp; cells[0].innerText.trim() !== '') {
+                            const x = parseFloat(cells[0].innerText);
+                            const y = parseFloat(cells[1].innerText);
+                            const r = parseFloat(cells[2].innerText);
+                            const hit = cells[5].innerText.trim() === "true";
+                            attempts.push({ x, y, r, hit });
+                        }
+                    });
+                    return attempts;
+                }
+
+                function drawGraph() {
+                    ctx.clearRect(0, 0, width, height);
+
+                    const FIGURE_COLOR = "#567efb99";
+                    ctx.fillStyle = FIGURE_COLOR;
+
+                    // Прямоугольник
+                    ctx.fillRect(width / 2, height / 3, width / 3, height / 6);
+
+                    // Сектор круга
+                    ctx.beginPath();
+                    ctx.arc(width / 2, height / 2, width / 6, Math.PI, Math.PI * 1.5);
+                    ctx.lineTo(width / 2, height / 2);
+                    ctx.fill();
+
+                    // Треугольник
+                    ctx.beginPath();
+                    ctx.moveTo(width / 2, height / 2);
+                    ctx.lineTo(width / 2, 5 * height / 6);
+                    ctx.lineTo(2 * width / 3, height / 2);
+                    ctx.fill();
+
+                    // Оси
+                    ctx.strokeStyle = "#000";
+                    ctx.beginPath();
+                    // Горизонтальная ось
+                    ctx.moveTo(0, height / 2);
+                    ctx.lineTo(width, height / 2);
+                    ctx.moveTo(width - 10, height / 2 - 10);
+                    ctx.lineTo(width, height / 2);
+                    ctx.lineTo(width - 10, height / 2 + 10);
+
+                    // Вертикальная ось
+                    ctx.moveTo(width / 2, 0);
+                    ctx.lineTo(width / 2, height);
+                    ctx.moveTo(width / 2 - 10, 10);
+                    ctx.lineTo(width / 2, 0);
+                    ctx.lineTo(width / 2 + 10, 10);
+                    ctx.stroke();
+
+                    const labels = ["-R", "-R/2", "0", "R/2", "R"];
+                    ctx.fillStyle = "#000";
+                    ctx.font = "13px sans-serif";
+
+                    for (let i = 1; i &lt; 6; i++) {
+                        ctx.beginPath();
+                        // Метки по оси X
+                        ctx.moveTo((i * width) / 6, height / 2 - 5);
+                        ctx.lineTo((i * width) / 6, height / 2 + 5);
+                        ctx.stroke();
+                        ctx.textAlign = "center";
+                        ctx.fillText(labels[i - 1], (i * width) / 6, height / 2 - 7);
+
+                        // Метки по оси Y
+                        ctx.moveTo(width / 2 - 5, (i * height) / 6);
+                        ctx.lineTo(width / 2 + 5, (i * height) / 6);
+                        ctx.stroke();
+                        ctx.textAlign = "left";
+                        ctx.fillText(labels[i - 1], width / 2 + 7, height - (i * height) / 6);
+                    }
+
+                    const attempts = getAttempts();
+
+                    let maxR = -1;
+                    document.querySelectorAll('#formParameters\\:rs input').forEach((input) => {
+                        if (input.checked) {
+                            const r = parseFloat(input.value);
+                            if (r > maxR) maxR = r;
+                        }
+                    });
+
+                    const chartLabel = document.querySelector('.chart-label');
+                    const rText = maxR === -1 ? 'not set' : maxR;
+                    chartLabel.innerText = 'R = ' + rText;
+
+                    if (maxR > -1) {
+                        attempts.forEach((attempt) => {
+                            const k = attempt.r / maxR;
+                            const x = (attempt.x / maxR) * k * width / 3 + width / 2;
+                            const y = -(attempt.y / maxR) * k * height / 3 + height / 2;
+
+                            ctx.fillStyle = attempt.hit ? "#11ff11" : "#ff3333";
+                            if (attempt.r !== maxR) {
+                                ctx.fillStyle = "#777";
+                            }
+                            ctx.beginPath();
+                            ctx.arc(x, y, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                        });
+                    }
+                }
+
+                canvas.onclick = (e) => {
+                    let rsSelectedNumber = 0;
+                    let r = null;
+                    document.querySelectorAll('#formParameters\\:rs input').forEach((input) => {
+                        if (input.checked) {
+                            rsSelectedNumber++;
+                            r = parseFloat(input.value);
+                        }
+                    });
+
+                    if (rsSelectedNumber !== 1) {
+                        alert("Please select only one value for R.");
+                        return;
+                    }
+
+                    const xClicked = ((2 * e.offsetX) / width - 1) * r * 1.5;
+                    const yClicked = ((-2 * e.offsetY) / height + 1) * r * 1.5;
+
+                    const yInput = document.getElementById('formParameters:y');
+                    yInput.value = yClicked.toFixed(2);
+                    hiddenInputX.value = xClicked.toFixed(2);
+
+                    document.getElementById('formParameters:submit').click();
+
+                    setTimeout(drawGraph, 500);
+                };
+
+                drawGraph();
+
+                document.querySelectorAll('#formParameters\\:rs input').forEach((input) => {
+                    input.addEventListener("click", drawGraph);
+                });
+
+                document.getElementById('formParameters:submit').addEventListener("click", () => {
+                    setTimeout(drawGraph, 500);
+                });
+
+                staticImage.style.display = "none";
             } else {
-                staticImage.style.display = "block"; // Показать статическое изображение
+                staticImage.style.display = "block";
             }
         };
     </script>
 
-            <div class="table">
+
+    <div class="table">
                 <h:dataTable id="maintable" value="#{model.getReversed()}" var="pointAttempt" styleClass="table-container">
                     <h:column id="xColumn">
                         <f:facet name="header">X</f:facet>
