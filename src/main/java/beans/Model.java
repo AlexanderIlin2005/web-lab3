@@ -16,12 +16,12 @@ import java.util.TimeZone;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
 import lombok.Setter;
 
 @Named
 @SessionScoped
-@NoArgsConstructor
+
 public class Model implements Serializable {
 
     private ArrayList<PointAttempt> data = new ArrayList<>();

@@ -3,7 +3,7 @@ package util;
 import beans.PointAttempt;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import javax.ejb.Singleton;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-@Singleton
+
 public class Connector {
 
     // Загружаем .env файл из папки resources
