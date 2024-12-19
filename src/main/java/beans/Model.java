@@ -1,7 +1,5 @@
 package beans;
 
-import util.Connector;
-
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;

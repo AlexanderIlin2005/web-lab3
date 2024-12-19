@@ -1,10 +1,8 @@
-package util;
+package beans;
 
-import beans.PointAttempt;
 import io.github.cdimascio.dotenv.Dotenv;
 
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
