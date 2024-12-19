@@ -1,35 +1,35 @@
 package beans;
 
-
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
-
+import java.io.Serializable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.TimeZone;
 
-import java.io.Serializable;
-
 import lombok.Getter;
-
 import lombok.Setter;
 
 @Named
 @SessionScoped
-
 public class Model implements Serializable {
 
     private ArrayList<PointAttempt> data = new ArrayList<>();
     private ZoneId zoneId = ZonedDateTime.now().getZone();
-    @Getter @Setter
-    String timezoneOffset;
+
+    @Getter
+    @Setter
+    private String timezoneOffset;
+
+    @Inject
+    private Connector connector;
 
     public void add(PointAttempt attempt) {
         data.add(attempt);
-        Connector.getInstance().makeBigAdd(attempt);
+        connector.makeBigAdd(attempt);
     }
 
     public ArrayList<PointAttempt> get() {
@@ -55,5 +55,4 @@ public class Model implements Serializable {
                 "data=" + data +
                 '}';
     }
-
 }

@@ -2,22 +2,20 @@ package beans;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
-
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-
+import java.io.Serializable;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
+@Named
+@SessionScoped
+public class Connector implements Serializable {
 
-public class Connector {
-
-    // Загружаем .env файл из папки resources
     private static final Dotenv dotenv;
 
     static {
@@ -30,30 +28,22 @@ public class Connector {
         }
     }
 
-    // Читаем переменные окружения, с fallback на .env файл
     private static final String DB_URL = getEnvVariable("DB_URL");
     private static final String USER = getEnvVariable("DB_USER");
     private static final String PASS = getEnvVariable("DB_PASS");
 
-    private static final Connector INSTANCE = new Connector();
     private Connection connection;
 
-    // Метод для получения переменной окружения с fallback на .env файл
     private static String getEnvVariable(String key) {
-        String value = System.getenv(key); // Читаем из окружения
+        String value = System.getenv(key);
         if (value == null && dotenv != null) {
-            value = dotenv.get(key); // Fallback на .env файл
+            value = dotenv.get(key);
         }
         return value;
     }
 
-    // Метод для получения экземпляра класса Connector
-    public static Connector getInstance() {
-        return INSTANCE;
-    }
-
-    // Конструктор класса, который устанавливает соединение с базой данных
-    private Connector() {
+    @PostConstruct
+    private void init() {
         try {
             Class.forName("org.postgresql.Driver");
             connection = DriverManager.getConnection(DB_URL, USER, PASS);
@@ -62,11 +52,10 @@ public class Connector {
         } catch (ClassNotFoundException | SQLException e) {
             System.err.println("Error on creating database connection");
             System.err.println(e.getMessage());
-            System.exit(-1);
+            throw new RuntimeException("Failed to initialize Connector", e);
         }
     }
 
-    // Метод для добавления данных в базу
     public void makeBigAdd(PointAttempt attempt) {
         try (PreparedStatement statement = connection.prepareStatement(
                 "INSERT INTO checks(id, x, y, r, date, working_time, status) VALUES (" +
@@ -85,7 +74,6 @@ public class Connector {
         }
     }
 
-    // Метод для инициализации базы данных (создание таблиц и последовательности)
     private void initDB() throws SQLException {
         try (Statement sm = connection.createStatement()) {
             sm.execute("CREATE TABLE IF NOT EXISTS checks\n" +
@@ -102,8 +90,19 @@ public class Connector {
         }
     }
 
-    // Метод для получения текущего соединения с базой данных
     public Connection getConnection() {
         return connection;
+    }
+
+    @PreDestroy
+    private void close() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to close database connection");
+            System.err.println(e.getMessage());
+        }
     }
 }
