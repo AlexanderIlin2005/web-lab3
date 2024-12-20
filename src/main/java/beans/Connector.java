@@ -4,7 +4,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import java.io.InputStream;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class Connector implements Serializable {
 
     private static final Dotenv dotenv;
