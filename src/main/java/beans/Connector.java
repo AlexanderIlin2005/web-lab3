@@ -4,8 +4,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.Singleton;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.enterprise.inject.spi.CDI;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.*;
@@ -14,6 +16,7 @@ import java.time.ZoneOffset;
 
 @Named
 @ApplicationScoped
+@Singleton
 public class Connector implements Serializable {
 
     private static final Dotenv dotenv;
@@ -90,9 +93,7 @@ public class Connector implements Serializable {
         }
     }
 
-    public Connection getConnection() {
-        return connection;
-    }
+
 
     @PreDestroy
     private void close() {
@@ -104,5 +105,9 @@ public class Connector implements Serializable {
             System.err.println("Failed to close database connection");
             System.err.println(e.getMessage());
         }
+    }
+
+    public static Connector getInstance() {
+        return CDI.current().select(Connector.class).get();
     }
 }

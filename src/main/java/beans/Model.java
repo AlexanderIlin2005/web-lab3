@@ -1,7 +1,6 @@
 package beans;
 
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.time.ZoneId;
@@ -24,12 +23,9 @@ public class Model implements Serializable {
     @Setter
     private String timezoneOffset;
 
-    @Inject
-    private Connector connector;
-
     public void add(PointAttempt attempt) {
         data.add(attempt);
-        connector.makeBigAdd(attempt);
+        Connector.getInstance().makeBigAdd(attempt);
     }
 
     public ArrayList<PointAttempt> get() {
